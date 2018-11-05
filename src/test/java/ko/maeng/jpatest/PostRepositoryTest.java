@@ -3,6 +3,7 @@ package ko.maeng.jpatest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -19,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PostRepositoryTest {
 
     @Autowired
@@ -44,11 +46,11 @@ public class PostRepositoryTest {
 
         List<Post> getPosts = postRepository.findAll();
 
-        for(Post post1 : getPosts){
+        getPosts.forEach(post1 -> {
             assertThat(post1.getTitle().equals("스프링 데이터 JPA 테스트"));
             assertThat(post1.getContents().equals("테스트를 시작합니다."));
             assertThat(post1.getAccount().getUsername().equals("msolo021015"));
             assertThat(post1.getAccount().getPassword().equals("1234"));
-        }
+        });
     }
 }
